@@ -1,6 +1,6 @@
 services:
   traefik:
-    container_name: reverse_proxy_traefik
+    container_name: traefik
     image: traefik:v3.5.0
     restart: always
     ports:
@@ -13,5 +13,5 @@ services:
       retries: 3
       start_period: 10s
   whoami:
-    container_name: reverse_proxy_whoami
+    container_name: whoami
     image: traefik/whoami

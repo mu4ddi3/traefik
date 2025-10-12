@@ -4,7 +4,7 @@ services:
     image: nginx
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=reverse-proxy-docker-traefik_routing"
+      - "traefik.docker.network=traefik_routing"
       - "traefik.http.routers.test.rule=Host(`hello-world.test`)"
       - "traefik.http.routers.test.entrypoints=web"
       - "traefik.http.services.test.loadbalancer.server.port=80"
@@ -12,8 +12,8 @@ services:
       - "traefik.http.routers.test-https.entrypoints=websecure"
       - "traefik.http.routers.test-https.tls=true"
     networks:
-      - reverse-proxy
+      - traefik
 networks:
-  reverse-proxy:
-    name: reverse-proxy-docker-traefik_routing
+  traefik:
+    name: traefik_routing
     external: true
