@@ -1,3 +1,16 @@
+# 1. Zainstaluj mkcert
+# 2. Wygeneruj certyfikaty
+mkcert -key-file certificates/local.key.pem -cert-file certificates/local.cert.pem \
+"localhost" "*.localhost" "whoami.localhost" "traefik.localhost" "pma.localhost"
+# 3. Zrestartuj Traefik
+docker-compose restart traefik
+# 4. Odśwież Firefox
+
+
+# Na Linux (Debian/Ubuntu):
+sudo cp certificates/local.cert.pem /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+
 # Traefik Setup with Docker Compose
 
 This is a reusable Traefik config for usage on a virtual server or for local development using Docker Compose.   
