@@ -1,6 +1,6 @@
 networks:
   traefik:
-    name: traefik_network
+    name: traefik_lan
     ipam:
       driver: default
       config:
