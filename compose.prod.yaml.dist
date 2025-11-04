@@ -1,5 +1,6 @@
 networks:
-  routing:
+  traefik:
+    name: traefik_network
     driver: bridge
 services:
   traefik:
@@ -9,10 +10,10 @@ services:
       - ./configs/dynamic:/etc/traefik/dynamic
       - ./certificates/acme.json:/etc/traefik/acme/acme.json
     networks:
-      - routing
+      - traefik
   whoami:
     networks:
-      - routing
+      - traefik
     labels:
       - traefik.enable=true
       - traefik.http.routers.whoami.rule=Host(`whoami.bornhub.pl`) || Host(`www.whoami.bornhub.pl`)

@@ -1,5 +1,6 @@
 networks:
-  routing:
+  traefik:
+    name: traefik_network
     ipam:
       driver: default
       config:
@@ -12,11 +13,11 @@ services:
       - ./configs/traefik.yml:/etc/traefik/traefik.yml
       - ./configs/dynamic:/etc/traefik/dynamic
     networks:
-      routing:
+      traefik:
         ipv4_address: 10.111.111.10
   whoami:
     networks:
-      routing:
+      traefik:
         ipv4_address: 10.111.111.11
     labels:
       - traefik.enable=true
