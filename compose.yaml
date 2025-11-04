@@ -16,9 +16,3 @@ services:
   whoami:
     container_name: born.whoami
     image: traefik/whoami
-
-networks:
-  frontend:
-  backend:
-    driver: bridge
-    internal: true  # Sieć wewnętrzna dla backendu
