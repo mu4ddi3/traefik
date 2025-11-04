@@ -1,6 +1,6 @@
 services:
   traefik:
-    container_name: traefik
+    container_name: born.traefik
     image: traefik:v3.5.4
     restart: always
     ports:
@@ -13,5 +13,5 @@ services:
       retries: 3
       start_period: 10s
   whoami:
-    container_name: whoami
+    container_name: born.whoami
     image: traefik/whoami
