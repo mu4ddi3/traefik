@@ -18,14 +18,20 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=born.frontend.lan"
+
+      # HTTP → HTTPS
       - "traefik.http.routers.whoami-http.entrypoints=web"
-      - "traefik.http.routers.whoami-http.rule=Host(`whoami.bornhub.pl`)"
-      - "traefik.http.routers.whoami-http.middlewares=chain-redirect-http-to-https-secure-limited@file"
+      - "traefik.http.routers.whoami-http.rule=Host(`whoami.bornhub.pl`) || HostRegexp(`www\\.whoami\\.bornhub\\.pl`)"
+      - "traefik.http.routers.whoami-http.middlewares=redirect-www-to-non-www@file,chain-redirect-http-to-https-secure-limited@file"
+
+      # HTTPS obsługuje tylko poprawny host
       - "traefik.http.routers.whoami-https.entrypoints=websecure"
       - "traefik.http.routers.whoami-https.rule=Host(`whoami.bornhub.pl`)"
       - "traefik.http.routers.whoami-https.middlewares=chain-secure-limited@file, redirect-www-to-non-www@file"
       - "traefik.http.routers.whoami-https.tls=true"
       - "traefik.http.routers.whoami-https.tls.certresolver=letsencrypt"
+
+      # Port wewnętrznego serwisu
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
 
 networks:
