@@ -20,10 +20,10 @@ services:
       - "traefik.docker.network=born.frontend.lan"
       - "traefik.http.routers.whoami-http.entrypoints=web"
       - "traefik.http.routers.whoami-http.rule=Host(`whoami.bornhub.pl`) || Host(`www.whoami.bornhub.pl`)"
-      - "traefik.http.routers.whoami-http.middlewares=http-to-https-secure-limited-chain@file"
+      - "traefik.http.routers.whoami-http.middlewares=chain-redirect-http-to-https-secure-limited@file"
       - "traefik.http.routers.whoami-https.entrypoints=websecure"
       - "traefik.http.routers.whoami-https.rule=Host(`whoami.bornhub.pl`) || Host(`www.whoami.bornhub.pl`)"
-      - "traefik.http.routers.whoami-https.middlewares=secure-limited-chain@file"
+      - "traefik.http.routers.whoami-https.middlewares=chain-secure-limited@file"
       - "traefik.http.routers.whoami-https.tls=true"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
 
