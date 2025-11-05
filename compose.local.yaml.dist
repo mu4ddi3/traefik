@@ -1,0 +1,45 @@
+services:
+  traefik:
+    networks:
+      frontend:
+        ipv4_address: 10.111.111.10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certificates:/certs:ro
+      - ./configs/traefik.local.yml:/etc/traefik/traefik.yml
+      - ./configs/dynamic/dashboard.local.yml:/etc/traefik/dynamic/dashboard.yml
+      - ./configs/dynamic/tls.local.yml:/etc/traefik/dynamic/tls.yml
+      - ./configs/dynamic/global-middlewares.yml:/etc/traefik/dynamic/global-middlewares.yml
+
+  whoami:
+    networks:
+      frontend:
+        ipv4_address: 10.111.111.11
+      backend:
+        ipv4_address: 10.111.112.11
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=born.frontend.lan"
+      - "traefik.http.routers.whoami-http.entrypoints=web"
+      - "traefik.http.routers.whoami-http.rule=Host(`whoami.localhost`) || Host(`www.whoami.localhost`)"
+      - "traefik.http.routers.whoami-http.middlewares=http-to-https-secure-limited-chain@file"
+      - "traefik.http.routers.whoami-https.entrypoints=websecure"
+      - "traefik.http.routers.whoami-https.rule=Host(`whoami.localhost`) || Host(`www.whoami.localhost`)"
+      - "traefik.http.routers.whoami-https.middlewares=secure-limited-chain@file"
+      - "traefik.http.routers.whoami-https.tls=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+
+networks:
+  frontend:
+    name: born.frontend.lan
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.111.111.0/24
+  backend:
+    name: born.backend.lan
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.111.112.0/24

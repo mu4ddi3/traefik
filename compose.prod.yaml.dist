@@ -1,0 +1,37 @@
+services:
+  traefik:
+    networks:
+      frontend:
+      backend:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certificates/acme.json:/etc/traefik/acme/acme.json
+      - ./configs/traefik.prod.yml:/etc/traefik/traefik.yml
+      - ./configs/dynamic/dashboard.prod.yml:/etc/traefik/dynamic/dashboard.yml
+      - ./configs/dynamic/tls.prod.yml:/etc/traefik/dynamic/tls.yml
+      - ./configs/dynamic/global-middlewares.yml:/etc/traefik/dynamic/global-middlewares.yml
+
+  whoami:
+    networks:
+      frontend:
+      backend:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=born.frontend.lan"
+      - "traefik.http.routers.whoami-http.entrypoints=web"
+      - "traefik.http.routers.whoami-http.rule=Host(`whoami.bornhub.pl`) || Host(`www.whoami.bornhub.pl`)"
+      - "traefik.http.routers.whoami-http.middlewares=http-to-https-secure-limited-chain@file"
+      - "traefik.http.routers.whoami-https.entrypoints=websecure"
+      - "traefik.http.routers.whoami-https.rule=Host(`whoami.bornhub.pl`) || Host(`www.whoami.bornhub.pl`)"
+      - "traefik.http.routers.whoami-https.middlewares=secure-limited-chain@file"
+      - "traefik.http.routers.whoami-https.tls=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+
+networks:
+  frontend:
+    name: born.frontend.lan
+    driver: bridge
+  backend:
+    name: born.backend.lan
+    driver: bridge
+    internal: true
