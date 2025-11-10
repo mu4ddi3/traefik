@@ -7,11 +7,11 @@ docker-compose restart traefik
 # 4. Odśwież Firefox
 
 
-Zestawienie tunelu:
+Zestawienie tunelu do konkretnego kontenera na bornhubie:
 ssh -L 5432:172.19.0.8:5432 -N debian@bornhub.pl
-połączenie przez tunel:
-docker run --rm -it --network host postgres:15-alpine psql -h localhost -p 5432 -U postgres -d odtj_2022_bornhub -c "SELECT 1;"
-
+weryfikacja połączenia przez tunel:
+- docker run --rm -it --network host postgres:15-alpine psql -h localhost -p 5432 -U postgres -d odtj_2022_bornhub -c "SELECT 1;"
+- telnet localhost 5432
 
 
 # Na Linux (Debian/Ubuntu):
