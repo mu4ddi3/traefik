@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "5434:5434"
+      - "5434:5432"
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 5s
