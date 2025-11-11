@@ -14,6 +14,8 @@ weryfikacja połączenia przez tunel:
 - telnet localhost 5432
 
 
+
+
 # Na Linux (Debian/Ubuntu):
 sudo cp certificates/local.cert.pem /usr/local/share/ca-certificates/
 sudo update-ca-certificates
@@ -87,6 +89,7 @@ It uses:
     ```  
      - You can use a website like [this](https://hostingcanada.org/htpasswd-generator/) to generate the hash (use Bcrypt).
      - Or generate it with: `echo $(htpasswd -nB user1)`
+     - Or # htpasswd -nb username password
 5. Replace email for Let's encrypt (`mail@somedomain.com` in `configs/traefik.yml`)
     ```yaml
     certificatesResolvers:
