@@ -9,10 +9,18 @@ docker-compose restart traefik
 
 Zestawienie tunelu do konkretnego kontenera na bornhubie:
 ssh -L 5432:172.19.0.8:5432 -N debian@bornhub.pl
+
+# tylko dev- nasluch na wszystkich interfejsach zeby kontener dockera mogl wykorzystac tunel na hoscie
+ssh -L 0.0.0.0:5432:172.19.0.8:5432 -N debian@bornhub.pl
+
 weryfikacja połączenia przez tunel:
 - docker run --rm -it --network host postgres:15-alpine psql -h localhost -p 5432 -U postgres -d odtj_2022_bornhub -c "SELECT 1;"
 - telnet localhost 5432
 
+Uruchom tunel na tym adresie:
+ssh -L 172.17.0.1:5432:172.19.0.8:5432 -N debian@bornhub.pl
+Lewa strona (172.17.0.1:5432) = adres hosta, pod którym kontener może połączyć się do tunelu
+Prawa strona (172.19.0.8:5432) = adres serwera docelowego, do którego tunelujemy
 
 
 
