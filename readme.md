@@ -1,3 +1,7 @@
+sudo certbot certonly --standalone -d mail.bornhub.pl --preferred-challenges http -d autodiscover.bornhub.pl -d autoconfig.bornhub.pl
+openssl s_client -connect mail.bornhub.pl:993 2>/dev/null | openssl x509 -noout -dates
+
+
 # 1. Zainstaluj mkcert
 # 2. Wygeneruj certyfikaty
 mkcert -key-file certificates/local.key.pem -cert-file certificates/local.cert.pem \
