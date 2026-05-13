@@ -1,12 +1,13 @@
 services:
   traefik:
     container_name: born.traefik
-    image: traefik:v3.6.1
+    image: traefik:v3.7.1
     restart: always
     ports:
       - "80:80"
       - "443:443"
       - "5434:5432"
+      - "3308:3306"
       - "8083:8083"
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
