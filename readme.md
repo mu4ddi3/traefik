@@ -14,6 +14,10 @@ docker-compose restart traefik
 Zestawienie tunelu do konkretnego kontenera na bornhubie:
 ssh -L 5432:172.19.0.8:5432 -N debian@bornhub.pl
 
+Tunel SSH do Prometheus UI (kontener nie jest wystawiony publicznie):
+ssh -L 9090:born.prometheus:9090 -N debian@bornhub.pl
+# nastepnie http://localhost:9090 w przegladarce
+
 # tylko dev- nasluch na wszystkich interfejsach zeby kontener dockera mogl wykorzystac tunel na hoscie
 ssh -L 0.0.0.0:5432:172.19.0.8:5432 -N debian@bornhub.pl
 
