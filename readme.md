@@ -1,5 +1,13 @@
-sudo certbot certonly --standalone -d mail.bornhub.pl --preferred-challenges http -d autodiscover.bornhub.pl -d autoconfig.bornhub.pl
-openssl s_client -connect mail.bornhub.pl:993 2>/dev/null | openssl x509 -noout -dates
+# Certyfikat poczty (mail.bornhub.pl) od 2026-08-18 wystawia i odnawia Traefik - router "mailcert"
+# w compose.prod.yaml (etykiety na kontenerze whoami). docker-mailserver czyta go wprost z acme.json,
+# ktory ma zamontowany tylko do odczytu. Certbot jest wylaczony (systemctl disable --now certbot.timer).
+# Nowa nazwe poczty dopisuje sie do reguly routera ORAZ do tls.domains[0].sans - bez sans Traefik
+# zapisze cert w acme.json pod innym kluczem glownym, a DMS szuka wpisu rownego swojemu HOSTNAME.
+# Stara komenda, juz nieuzywana, dla historii:
+#   sudo certbot certonly --standalone -d mail.bornhub.pl --preferred-challenges http -d autodiscover.bornhub.pl -d autoconfig.bornhub.pl
+
+# Weryfikacja certyfikatu poczty (IMAPS):
+openssl s_client -connect mail.bornhub.pl:993 2>/dev/null | openssl x509 -noout -dates -ext subjectAltName
 
 
 # 1. Zainstaluj mkcert

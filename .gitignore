@@ -1,6 +1,5 @@
 certificates/*
 .idea
-compose.yaml
 compose.*.yaml
 configs
 .env

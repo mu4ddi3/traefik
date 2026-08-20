@@ -31,6 +31,26 @@ services:
 
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
 
+      # ------------------------------------------------------------------
+      # Certyfikat dla poczty. Ten router istnieje WYLACZNIE po to, zeby
+      # Traefik wystawial i odnawial cert dla nazw serwera pocztowego.
+      # docker-mailserver czyta go potem z acme.json (montowanie w compose
+      # DMS), dzieki czemu certbot nie jest juz potrzebny - nie trzeba
+      # zatrzymywac Traefika na czas walidacji.
+      # Backend wskazuje na whoami, bo tresc pod tymi nazwami nie ma znaczenia.
+      # NIE USUWAC bez przestawienia DMS z powrotem na certbota.
+      # ------------------------------------------------------------------
+      - "traefik.http.routers.mailcert.entrypoints=websecure"
+      - "traefik.http.routers.mailcert.rule=Host(`mail.bornhub.pl`) || Host(`autoconfig.bornhub.pl`) || Host(`autodiscover.bornhub.pl`)"
+      - "traefik.http.routers.mailcert.tls=true"
+      - "traefik.http.routers.mailcert.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.mailcert.service=whoami"
+      # Jawne main/sans: bez tego Traefik zapisuje cert w acme.json pod kluczem
+      # "autoconfig.bornhub.pl" (sortuje nazwy alfabetycznie), a DMS szuka po
+      # swoim HOSTNAME i trafilby na inny, starszy wpis.
+      - "traefik.http.routers.mailcert.tls.domains[0].main=mail.bornhub.pl"
+      - "traefik.http.routers.mailcert.tls.domains[0].sans=autoconfig.bornhub.pl,autodiscover.bornhub.pl"
+
 networks:
   frontend:
     name: born.frontend.lan
